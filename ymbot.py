@@ -177,6 +177,27 @@ def checkRemoteStatus():
     pass
 
 
+def cleanup(mmid):
+    url = "https://services.yesmail.com/enterprise/masters/" + str(mmid) + "/assets"
+    headers = {'content-type': 'application/json', 'Accept': 'application/json'}
+    headers.update(getAuthHeaders())
+    print "Fetching Asset list for: " + str(mmid)
+    r = requests.get(url, headers=headers)
+    data = json.loads(r.text)
+    assets = data['assets']
+    if r.status_code == 200:
+        print "LIST FETCH OK"
+        print "Asset Count: " + str(len(assets))
+        for assetUrl in assets:
+            headers = {'content-type': 'application/json', 'Accept': 'application/json'}
+            headers.update(getAuthHeaders())
+            r = requests.delete(assetUrl, headers=headers)
+            data = json.loads(r.text)
+            print "DELETED " + assetUrl
+
+
+
+
 if __name__ == '__main__':
     args = sys.argv[1:]
 
@@ -191,6 +212,10 @@ if __name__ == '__main__':
 
         elif args[0] == 'fetch' and len(args) == 3:
             fetch(args[1], args[2])
+
+    elif len(args) == 2:
+        if args[0] == 'cleanup':
+            cleanup(args[1])
     else:
         print """ymbot supports:
                 push: ymbot push local_dir MMID [--force]
