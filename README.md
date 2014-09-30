@@ -1,7 +1,10 @@
 yesmail_tools
 =============
 
-Tools to help with Yesmail development
+A set of tools to help with Yesmail development.
+
+Email development workflow usually involves: updating the remote Master template and testing it with remotely triggered code/variables.
+These command line tools make it really easy to upload asset changes, clean up the remote master and most importantly preseve changes in local git repo.
 
 ##ymbot:##
 	Allows pushing and fetching assets to and from yesmail.
